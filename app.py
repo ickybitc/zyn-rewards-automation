@@ -19,11 +19,14 @@ app = Flask(__name__)
 
 def setup_driver():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
     
-    service = Service(ChromeDriverManager().install())
+    # Use ChromeDriverManager with specific path for PythonAnywhere
+    service = Service('/usr/local/bin/chromedriver')
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
@@ -137,4 +140,4 @@ def automate():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=False, host='0.0.0.0') 
